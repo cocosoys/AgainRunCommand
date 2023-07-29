@@ -1,0 +1,65 @@
+# 指令检测,即 检测的指令名称
+# 写入 <null> 会忽略该参数的匹配,如: 'ban <null> 理由:xxxxx'
+# 写入 [参数名] 会选择性忽略参数匹配,即存在则匹配,不存在则不匹配,如: 'libertybans [mute] <null>'
+# [参数名] 中的 '参数名' 改为如果存在的话，将会匹配的参数
+# [*number] 代表该参数必须是一个数字,[*string] 代表该参数必须是一个字符串
+# [*player] 代表该参数必须是一个在线的玩家名称,[*world] 代表该参数必须是一个世界名称
+# 完美匹配写法如: 'ban soys' 只有执行指令/ban soys时才触发
+# 粗略匹配写法如: 'ban' 只要输入了/ban指令就触发,无论是否有参数
+# 暂无此功能 -> 匹配优先原则: 含有<null>和[参数名] >>> 含有[参数名] >>> 含有<null> >>> 完美匹配 >>> 粗略匹配
+# 暂无此功能 -> 已禁止大量特殊写法如:只有<null>或者只有[参数名],如果你的特殊写法产生bug,请联系我 -> qq:2782876939
+# 输入/arc debug可以观察 指令检测 的执行情况,内容会输出在后台中
+
+ban:
+  # 是否启用,true为启用,false为禁用
+  enable: true
+  # 是否强制终止该指令的执行,true为终止,false为继续执行
+  # 注释:终止 表示 /ban 这个指令是否会执行
+  run: false
+  # 是否允许多次触发,true为允许,false为禁止
+  # 注释:若触发了其他的指令检测,匹配到该指令检测时,是否还要继续执行
+  with: false
+  # 是否仅op能够触发
+  op: true
+  # <args1>表示参数第一位,如"/ban soys"这里的<args1>将替换为soys
+  # 以此类推,<args2>,<args3>,<args4>分别对应第二位参数,第三位参数,第四位参数
+  # <commandName> 则对应指令的名称
+  # 支持papi变量,支持&代替§,执行的指令无需加/
+  # 开头可以为[player],[op],[console].分别表示由玩家自己执行指令,玩家以OP权限执行指令,后台执行指令
+  # 开头标记也可不写，默认为 由玩家自己执行指令
+  # 示例:
+  # - '[console]broadcast &e&l全服通告 &7>> 由后台执行了该公告指令'
+  # - 'tell %player_name% &2我告诉我自己,&e<args1>&2被我&4ban&2了'
+  # - '[op]tell @a &2我告诉所有人,&e<args1>&2被我ban了!'
+  # - '[player]banlist'
+  commands:
+    - 'tell @a &e&l全服通知 &7>> &e%player_name% 封禁了 &e<args1>'
+    - '[console]tell @a 测试一下<commandName>,papi变量:%player_name%'
+libertybans mute <null>:
+  enable: false
+  run: false
+  with: false
+  op: true
+  commands:
+    - 'tell @a &e&l全服通知 &7>> &e%player_name% 禁言了 &e<args1>'
+help 1:
+  enable: false
+  run: false
+  with: false
+  op: true
+  commands:
+    - '[player]tell %player_name% &2你打开了第一页指令帮助'
+<null> soys:
+  enable: false
+  run: false
+  with: false
+  op: true
+  commands:
+    - '[op]tell %player_name% &2第一个参数是soys'
+tp <null> [100] <null>:
+  enable: false
+  run: false
+  with: false
+  op: true
+  commands:
+    - 'tell %player_name% &2你tp到了100格高的位置'

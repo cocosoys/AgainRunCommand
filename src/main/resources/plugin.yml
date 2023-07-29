@@ -1,0 +1,10 @@
+name: AgainRunCommand
+version: ${project.version}
+main: soys.againruncommand.AgainRunCommand
+api-version: 1.13
+depend:
+  - PlaceholderAPI
+commands:
+  AgainRunCommand:
+    aliases: arc
+    description: 输入/arc reload 重载指令
